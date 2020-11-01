@@ -35,7 +35,7 @@ print("ESP OK")
 #ssid = 'SSID Here'
 #password = 'Password Here'
 
-mqtt_server = '10.20.5.55'
+mqtt_server = '10.20.5.55' # Change to your mqtt broker ip
 
 
 client_id = ubinascii.hexlify(machine.unique_id()) # cookie code use the board hardware id to diff the sensor
@@ -61,7 +61,10 @@ print('Connection successful')
 # Dont forget to initialize the pins before the loop
 
 sensor = ADC(Pin(36))
+sensor.atten(ADC.ATTN_11DB)  
 bat = ADC(Pin(35))
+bat.atten(ADC.ATTN_11DB)
+
 
 def connect_mqtt():
   global client_id, mqtt_server
@@ -80,8 +83,8 @@ def read_sensor():
   try:
     # temp Section Nathan put the code here to read your sensor make sure that you return the converted value as 'temp'
     #//////////////////////////////////////////////////////////////////////////////////////
-    temp = sensor.read() # setup using the analog in pin with a pot on pin 36 (A4)
-    
+    temp = sensor.read() # setup using the analog in pin with a pot on pin 36 (A4) ADC Count
+    temp = (temp*20)/4095 #convert to mA
     
     #//////////////////////////////////////////////////////////////////////////////////////
     #temp = temp * (9/5) + 32.0  i threw this in 'cause you know i like merica!
@@ -89,7 +92,9 @@ def read_sensor():
     # battery voltage section, We need to set an alarm in ignition around 3.4v, 3.2v auto shutdown
     measuredvbat = bat.read()  # Read the value
     measuredvbat /= 4095  # divide by 4095 as we are using the default ADC voltage range of 0-1V
-    measuredvbat *= 3.7  # Multiply by 3.7V, our reference voltage
+    measuredvbat *= 2  # Voltage is halved by the voltage divider
+    measuredvbat *= 3.3 # Multiply by 3.3V, our reference voltage
+    measuredvbat *= 1.1 # ADC Reference voltage is 1100mV
     batv = measuredvbat
     
     return temp, batv #return som n to get som n
