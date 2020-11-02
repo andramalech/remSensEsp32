@@ -12,4 +12,5 @@ Nathan I left a section in the main.py code for you to add your sensor module co
  * change the message_interval to 60 sec from 5
 
 Use the main.py for the wifi manager
+
 Use the main-no_wifi-mgr for hidden networks and rename to main.py
