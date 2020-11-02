@@ -10,3 +10,6 @@ Mqtt publish to broker
 Nathan I left a section in the main.py code for you to add your sensor module code. ensure that you return the formatted value as `temp`
  * before deploying change the ip address for the mqtt broker (mqtt_server)
  * change the message_interval to 60 sec from 5
+
+Use the main.py for the wifi manager
+Use the main-no_wifi-mgr for hidden networks and rename to main.py
