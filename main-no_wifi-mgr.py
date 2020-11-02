@@ -1,4 +1,8 @@
-import wifimgr
+# rename to main.py
+# Set the SSID and Password
+# Set the MQTT Broker IP
+# change the message interval
+
 from machine import Pin, ADC
 from time import sleep
 import time
@@ -12,32 +16,14 @@ esp.osdebug(None)
 import gc
 gc.collect()
 
-#Wireless Manager/////////////////////////////////////////////////////////////////////////
-try:
-  import usocket as socket
-except:
-  import socket
-
-wlan = wifimgr.get_connection()
-if wlan is None:
-    print("Could not initialize the network connection.")
-    while True:
-        pass  # you shall not pass :D
-
-# Main Code goes here, wlan is a working network.WLAN(STA_IF) instance.
-print("ESP OK")
-
-# Wireless Manager/////////////////////////////////////////////////////////////////////////
-
 
 ##MQTT##
 
-#ssid = 'SSID Here'
-#password = 'Password Here'
+ssid = 'SSID'
+password = 'password'
 
-mqtt_server = 'dameant.com' # Change to your mqtt broker ip
-user = 'sensor'
-password = 'Tseind1'
+mqtt_server = '10.20.8.19' # Change to your mqtt broker ip
+
 
 client_id = ubinascii.hexlify(machine.unique_id()) # cookie code use the board hardware id to diff the sensor
 
@@ -49,13 +35,13 @@ topic_pub_bat = b'eng/remSen_%s/bat' % client_id
 last_message = 0
 message_interval = 5 # After dev lets change this to 60 second message interval
 
-#station = network.WLAN(network.STA_IF)
+station = network.WLAN(network.STA_IF)
 
-#station.active(True)
-#station.connect(ssid, password)
+station.active(True)
+station.connect(ssid, password)
 
-#while station.isconnected() == False:
-#  pass
+while station.isconnected() == False:
+ pass
 
 print('Connection successful')
 
@@ -69,8 +55,8 @@ bat.atten(ADC.ATTN_11DB)
 
 def connect_mqtt():
   global client_id, mqtt_server
-  #client = MQTTClient(client_id, mqtt_server)
-  client = MQTTClient(client_id, mqtt_server, user, password)
+  client = MQTTClient(client_id, mqtt_server)
+  #client = MQTTClient(client_id, mqtt_server, user, password)
   client.connect()
   print('Connected to %s MQTT broker' % (mqtt_server))
   return client
