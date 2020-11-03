@@ -62,7 +62,7 @@ print('Connection successful')
 # Dont forget to initialize the pins before the loop
 
 sensor = ADC(Pin(36))
-sensor.atten(ADC.ATTN_11DB)  
+sensor.atten(ADC.ATTN_11DB)
 bat = ADC(Pin(35))
 bat.atten(ADC.ATTN_11DB)
 
@@ -86,10 +86,10 @@ def read_sensor():
     #//////////////////////////////////////////////////////////////////////////////////////
     temp = sensor.read() # setup using the analog in pin with a pot on pin 36 (A4) ADC Count
     temp = (temp*20)/4095 #convert to mA
-    
+
     #//////////////////////////////////////////////////////////////////////////////////////
     #temp = temp * (9/5) + 32.0  i threw this in 'cause you know i like merica!
-    
+
     # battery voltage section, We need to set an alarm in ignition around 3.4v, 3.2v auto shutdown
     measuredvbat = bat.read()  # Read the value
     measuredvbat /= 4095  # divide by 4095 as we are using the default ADC voltage range of 0-1V
@@ -97,10 +97,10 @@ def read_sensor():
     measuredvbat *= 3.3 # Multiply by 3.3V, our reference voltage
     measuredvbat *= 1.1 # ADC Reference voltage is 1100mV
     batv = measuredvbat
-    
+
     return temp, batv #return som n to get som n
- 
-    
+
+
   except OSError as e:
     return('Failed to read sensor.')
 
@@ -122,5 +122,3 @@ while True:
     restart_and_reconnect()
 
 # Still need to work on a deep sleep to preserve battery life. I'm thinking of dropping to  low power for 60 sec.
-
-
