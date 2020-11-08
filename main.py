@@ -12,11 +12,11 @@ esp.osdebug(None)
 import gc
 gc.collect()
 
-#Wireless Manager/////////////////////////////////////////////////////////////////////////
+# Wireless Manager/////////////////////////////////////////////////////////////////////////
 try:
-  import usocket as socket
+    import usocket as socket
 except:
-  import socket
+    import socket
 
 wlan = wifimgr.get_connection()
 if wlan is None:
